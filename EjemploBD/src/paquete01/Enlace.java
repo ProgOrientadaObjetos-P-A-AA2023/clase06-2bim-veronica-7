@@ -21,12 +21,13 @@ public class Enlace {
      * @return 
     */
     private Connection conn;
-       
+    ArrayList<Ciudad> lista = new ArrayList<>();
+    
     public void establecerConexion() {  
 
         try {  
             // db parameters  
-            String url = "jdbc:sqlite:bd/base01.bd";  
+            String url = "jdbc:sqlite:bd/base01.bd";  // ruta en donde va a encontrar la base de datos
             // create a connection to the database  
             conn = DriverManager.getConnection(url);  
             // System.out.println(conn.isClosed());
@@ -47,11 +48,11 @@ public class Enlace {
         try{  
             establecerConexion();
             Statement statement = obtenerConexion().createStatement();
-            String data = String.format("INSERT INTO Ciudad (nombre, poblacion) "
+            String data = String.format("INSERT INTO Ciudad (nombre, poblacion) " // se le pide que inserte en ciudad el nombre y poblacion
                     + "values ('%s', %d)", ciudad.obtenerNombre(), 
                     ciudad.obtenerPoblacion());
-            statement.executeUpdate(data);
-            obtenerConexion().close();
+            statement.executeUpdate(data); // se le manda la cadena, esto permite insertar algo
+            obtenerConexion().close(); // cierra la conexion
         } catch (SQLException e) {  
              System.out.println("Exception: insertarCiudad");
              System.out.println(e.getMessage());  
@@ -59,17 +60,16 @@ public class Enlace {
         }  
     }
     
-    public ArrayList<Ciudad> obtenerDataCiudad() {  
-        ArrayList<Ciudad> lista = new ArrayList<>();
+    public void obtenerDataCiudad() {
         try{  
             establecerConexion();
             Statement statement = obtenerConexion().createStatement();
-            String data = "Select * from Ciudad;";
+            String data = "Select * from Ciudad;"; // *(todos los registros)
             
-            ResultSet rs = statement.executeQuery(data);
+            ResultSet rs = statement.executeQuery(data); // executeQuery para sacar toda la informacion 
             while(rs.next()){
                 Ciudad miCiudad = new Ciudad(rs.getString("nombre"),
-                rs.getInt("poblacion"));
+                rs.getInt("poblacion")); // nombres de a tabla
                 lista.add(miCiudad);
             }
             
@@ -78,7 +78,10 @@ public class Enlace {
              System.out.println("Exception: insertarCiudad");
              System.out.println(e.getMessage());  
              
-        }  
+        }
+    }
+    
+    public ArrayList<Ciudad> obtenerLista() {
         return lista;
     }
      

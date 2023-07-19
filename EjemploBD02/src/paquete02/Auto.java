@@ -13,6 +13,11 @@ public class Auto {
     private String placa;
     private double valorMatricula;
     
+    /*public Auto(String p, double vm){
+        placa = p;
+        valorMatricula = vm;
+    }*/
+    
     public void establecerPlaca(String p){
         placa = p;
     }
@@ -29,5 +34,11 @@ public class Auto {
         return valorMatricula;
     }
     
-    
+    @Override
+    public String toString(){
+        String data = String.format("Placa: %s\n"
+                + "Valor del auto: %.2f\n", 
+                obtenerPlaca(), obtenerValorMatricula());
+        return data;
+    }
 }
